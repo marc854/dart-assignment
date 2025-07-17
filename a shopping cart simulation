@@ -1,0 +1,34 @@
+void main() {
+  // Step 1: List of item prices
+  List<double> cartItems = [5.0, 12.0, 25.5, 8.0, 15.0, 30.0];
+
+  // Step 2: Filter items above $10 using an anonymous function
+  List<double> filteredItems = cartItems.where((price) => price >= 10.0).toList();
+  print('Filtered Items: $filteredItems');
+
+  // Step 3: Apply discount using a higher-order function
+  List<double> applyDiscount(List<double> items, double discountPercent) {
+    return items.map((price) => price - (price * discountPercent)).toList();
+  }
+
+  List<double> discountedItems = applyDiscount(filteredItems, 0.10); // 10% discount
+  print('After 10% Discount: $discountedItems');
+
+  // Step 4: Calculate total with optional tax
+  double calculateTotal(List<double> items, {double taxRate = 0.0}) {
+    double subtotal = items.fold(0, (sum, item) => sum + item);
+    return subtotal + (subtotal * taxRate);
+  }
+
+  double totalWithTax = calculateTotal(discountedItems, taxRate: 0.08); // 8% tax
+  print('Total with 8% tax: \$${totalWithTax.toStringAsFixed(2)}');
+
+  // Step 5: Recursive factorial function for item count-based discount
+  int factorial(int n) => (n <= 1) ? 1 : n * factorial(n - 1);
+
+  int itemCount = discountedItems.length;
+  int fact = factorial(itemCount);
+  double finalTotal = totalWithTax - fact.toDouble(); // subtract factorial as extra discount
+  print('Factorial of $itemCount is $fact');
+  print('Final Price after factorial discount: \$${finalTotal.toStringAsFixed(2)}');
+}
